@@ -64,16 +64,16 @@ int main(int argc, char *argv[])
   // Part one
   // ++++++++
 
-  // int increasedValuesCount = 0;
-  // for (int i = 1; i < ARRAY_SIZE; i++)
-  // {
-  //   if (values[i] > values[i - 1])
-  //   {
-  //     increasedValuesCount++;
-  //   }
-  // }
+  int increasedValuesCount = 0;
+  for (int i = 1; i < ARRAY_SIZE; i++)
+  {
+    if (values[i] > values[i - 1])
+    {
+      increasedValuesCount++;
+    }
+  }
 
-  // printf("Increased values compared to last value: %d\n", increasedValuesCount);
+  printf("Increased values compared to last value: %d\n", increasedValuesCount);
 
   // ++++++++
   // Part two
