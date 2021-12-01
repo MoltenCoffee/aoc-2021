@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
 
   long *values = (long *)calloc(ARRAY_SIZE, sizeof(long));
   readValues(file, values);
+  fclose(file);
 
   // ++++++++
   // Part one
@@ -94,7 +95,6 @@ int main(int argc, char *argv[])
   printf("Increased window sum compared to last window: %d\n", increasedWindowSumCount);
 
   // Cleanup
-  fclose(file);
   free(values);
   return EXIT_SUCCESS;
 }
