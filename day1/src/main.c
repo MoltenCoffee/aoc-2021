@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <stdio.h>
 
-#define ARRAY_SIZE 2048
+#define ARRAY_SIZE 2000
 
 static inline void emptyBuffer(char *buffer)
 {
