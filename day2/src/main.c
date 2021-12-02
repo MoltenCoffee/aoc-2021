@@ -83,28 +83,63 @@ int main(int argc, char *argv[])
     }
   }
 
-  int horz = 0;
-  int depth = 0;
+  // ++++++++
+  // Part one
+  // ++++++++
+
+  int horz1 = 0;
+  int depth1 = 0;
 
   for (int i = 0; i < inputCount; i++)
   {
     switch (input[i].direction)
     {
     case UP:
-      depth -= input[i].amount;
+      depth1 -= input[i].amount;
       break;
     case DOWN:
-      depth += input[i].amount;
+      depth1 += input[i].amount;
       break;
     case FORWARD:
-      horz += input[i].amount;
+      horz1 += input[i].amount;
       break;
     }
   }
 
-  printf("Horizontal distance: %d\n", horz);
-  printf("Depth: %d\n", depth);
-  printf("Multiplied: %d\n", horz * depth);
+  printf("Part 1:\n");
+  printf("Horizontal distance: %d\n", horz1);
+  printf("Depth: %d\n", depth1);
+  printf("Multiplied: %d\n", horz1 * depth1);
+
+  // ++++++++
+  // Part two
+  // ++++++++
+
+  int aim = 0;
+  int horz2 = 0;
+  int depth2 = 0;
+
+  for (int i = 0; i < inputCount; i++)
+  {
+    switch (input[i].direction)
+    {
+    case UP:
+      aim -= input[i].amount;
+      break;
+    case DOWN:
+      aim += input[i].amount;
+      break;
+    case FORWARD:
+      horz2 += input[i].amount;
+      depth2 += aim * input[i].amount;
+      break;
+    }
+  }
+
+  printf("\n\nPart 2:\n");
+  printf("Horizontal distance: %d\n", horz2);
+  printf("Depth: %d\n", depth2);
+  printf("Multiplied: %d\n", horz2 * depth2);
 
   free(input);
   return EXIT_SUCCESS;
