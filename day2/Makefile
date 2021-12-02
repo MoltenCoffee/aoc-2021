@@ -6,7 +6,7 @@ SRC_DIR := ./src
 OBJ_DIR := ./obj
 SRC_FILES := $(wildcard $(SRC_DIR)/*.c)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
-TARGET	:= day1.out
+TARGET	:= day2.out
 
 $(BUILD_DIR)/$(TARGET): $(OBJ_FILES)
 	$(CC) $(LFLAGS) -o $@ $^
