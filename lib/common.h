@@ -6,5 +6,6 @@
 #include <string.h>
 
 char* readFile(const char* path);
+char* readLine(char* buffer);
 
 #endif
