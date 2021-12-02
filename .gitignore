@@ -3,3 +3,6 @@ out/
 templates/
 .vscode/
 .git/
+
+*.o
+*.out
