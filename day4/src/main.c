@@ -72,11 +72,11 @@ static bool crossFields(Board board, int draw)
 
 static void printBoard(Board board)
 {
-  printf("%d, %d, %d, %d, %d\n", board[0][0].checked, board[0][1].checked, board[0][2].checked, board[0][3].checked, board[0][4].checked);
-  printf("%d, %d, %d, %d, %d\n", board[1][0].checked, board[1][1].checked, board[1][2].checked, board[1][3].checked, board[1][4].checked);
-  printf("%d, %d, %d, %d, %d\n", board[2][0].checked, board[2][1].checked, board[2][2].checked, board[2][3].checked, board[2][4].checked);
-  printf("%d, %d, %d, %d, %d\n", board[3][0].checked, board[3][1].checked, board[3][2].checked, board[3][3].checked, board[3][4].checked);
-  printf("%d, %d, %d, %d, %d\n\n", board[4][0].checked, board[4][1].checked, board[4][2].checked, board[4][3].checked, board[4][4].checked);
+  for (int i = 0; i < BOARD_ROWS; i++)
+  {
+    printf("%d, %d, %d, %d, %d\n", board[i][0].checked, board[i][1].checked, board[i][2].checked, board[i][3].checked, board[i][4].checked);
+  }
+  printf("\n");
 }
 
 int main(int argc, char *argv[])
