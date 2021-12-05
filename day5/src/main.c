@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 #include "../../lib/common.h"
 
@@ -153,8 +154,37 @@ int main(int argc, char *argv[])
     }
     else
     {
-      // Ignore diagonal
-      continue;
+      // Handle diagonal (always 45 degrees)
+      int lowX, highX, lowY, highY, currentX, currentY;
+
+      if (x1 > x2)
+      {
+        lowX = x2;
+        lowY = y2;
+        highX = x1;
+        highY = y1;
+      } else {
+        lowX = x1;
+        lowY = y1;
+        highX = x2;
+        highY = y2;
+      }
+      currentX = lowX;
+      currentY = lowY;
+
+      bool increaseY = lowY < highY;
+
+      while (currentX <= highX)
+      {
+        grid[currentX][currentY]++;
+        currentX++;
+        if (increaseY)
+        {
+          currentY++;
+        } else {
+          currentY--;
+        }
+      }
     }
   }
 
@@ -170,7 +200,7 @@ int main(int argc, char *argv[])
     }
   }
 
-  printf("%d\n", dangerCount);
+  printf("Dangerous tiles: %d\n\n", dangerCount);
 
   // cleanup
   for (int i = 0; i < maxX + 1; i++)
