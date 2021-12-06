@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
   }
 
   uint64_t totalFish = stages[0] + stages[1] + stages[2] + stages[3] + stages[4] + stages[5] + stages[6] + stages[7] + stages[8];
-  printf("Total fish after %d days: %ld\n", DAYS, totalFish);
+  printf("Total fish after %d days: %ld\n\n", DAYS, totalFish);
 
   return EXIT_SUCCESS;
 }
