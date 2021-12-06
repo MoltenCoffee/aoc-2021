@@ -6,9 +6,7 @@
 
 #include "../../lib/common.h"
 
-#define INPUT_SIZE 300
-#define ARRAY_GROW_FACTOR 2
-#define DAYS 80
+#define DAYS 256
 
 #define NEW_FISH_VALUE 8
 #define RESET_FISH_VALUE 6
@@ -23,12 +21,7 @@ int main(int argc, char *argv[])
   }
   char *file = readFile(argv[1]);
 
-  // Allocate initial array
-  int arraySize = INPUT_SIZE * ARRAY_GROW_FACTOR;
-  uint8_t *fish = calloc(arraySize, sizeof(uint8_t));
-  if (fish == NULL)
-    fprintf(stderr, "Could not allocate memory!\n");
-  int fishCount = 0;
+  uint64_t stages[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
   // Insert input data into array
   int charCount = 0;
@@ -39,54 +32,55 @@ int main(int argc, char *argv[])
       break;
     if (isdigit(c))
     {
-      char numstr[2] = {c, '\0'};
-      fish[fishCount] = (uint8_t)atoi(numstr);
-      fishCount++;
+      switch (c)
+      {
+      case '1':
+        stages[1]++;
+        break;
+      case '2':
+        stages[2]++;
+        break;
+      case '3':
+        stages[3]++;
+        break;
+      case '4':
+        stages[4]++;
+        break;
+      case '5':
+        stages[5]++;
+        break;
+      }
     }
     charCount++;
   }
 
-  // Loop over days
-  for (int i = 1; i < DAYS + 1; i++)
+  for (int i = 0; i < DAYS; i++)
   {
-    int totalNew = 0;
-    // Loop over fish
-    for (int j = 0; j < fishCount; j++)
+    uint64_t newStages[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    // Build new array
+    for (int i = 0; i < 9; i++)
     {
-      if (fish[j] == 0)
+      if (i == 0)
       {
-        fish[j] = RESET_FISH_VALUE;
-        totalNew++;
-        continue;
+        newStages[RESET_FISH_VALUE] += stages[0];
+        newStages[NEW_FISH_VALUE] += stages[0];
       }
-      fish[j]--;
+      else
+      {
+        newStages[i - 1] += stages[i];
+      }
     }
 
-    // Check if array allows for new fish, grow if needed
-    if (fishCount + totalNew >= arraySize)
+    // update old array
+    for (int i = 0; i < 9; i++)
     {
-      // printf("-- Growing array from %d to %d fish\n", arraySize, arraySize * ARRAY_GROW_FACTOR);
-      arraySize = arraySize * ARRAY_GROW_FACTOR;
-      fish = realloc(fish, arraySize * sizeof(uint8_t));
-      if (fish == NULL)
-        fprintf(stderr, "Could not grow memory!\n");
-    }
-
-    // printf("After %d day(s), %d new fish added\n", i, totalNew);
-
-    // Add new fish if needed
-    if (totalNew > 0)
-    {
-      for (int k = 0; k < totalNew; k++)
-      {
-        fish[fishCount] = NEW_FISH_VALUE;
-        fishCount++;
-      }
+      stages[i] = newStages[i];
     }
   }
 
-  printf("Total fish after %d days: %d\n", DAYS, fishCount);
+  uint64_t totalFish = stages[0] + stages[1] + stages[2] + stages[3] + stages[4] + stages[5] + stages[6] + stages[7] + stages[8];
+  printf("Total fish: %ld\n", totalFish);
 
-  free(fish);
   return EXIT_SUCCESS;
 }
