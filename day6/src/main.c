@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <ctype.h>
-#include <string.h>
 
 #include "../../lib/common.h"
 
@@ -80,7 +79,7 @@ int main(int argc, char *argv[])
   }
 
   uint64_t totalFish = stages[0] + stages[1] + stages[2] + stages[3] + stages[4] + stages[5] + stages[6] + stages[7] + stages[8];
-  printf("Total fish: %ld\n", totalFish);
+  printf("Total fish after %d days: %ld\n", DAYS, totalFish);
 
   return EXIT_SUCCESS;
 }
