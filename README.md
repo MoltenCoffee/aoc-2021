@@ -9,3 +9,5 @@ Each day can be run using the following snippet (replace the number with the wan
 ```sh
 ./run.sh 1
 ```
+
+`make` and `gcc` are required for this command to work.
