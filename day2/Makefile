@@ -9,9 +9,11 @@ OBJ_FILES := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
 TARGET	:= day2.out
 
 $(BUILD_DIR)/$(TARGET): $(OBJ_FILES)
+	@mkdir -p $(@D)
 	$(CC) $(LFLAGS) -o $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -std=c18 -c -o $@ $<
 
 clean:
