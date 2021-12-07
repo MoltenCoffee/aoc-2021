@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
         break;
     }
   }
+  free(file);
 
   // Not the fastest, but it works
   qsort(input, inputCount, sizeof(uint16_t), compare);
