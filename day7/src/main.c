@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <ctype.h>
-#include <stdbool.h>
 
 #include "../../lib/common.h"
 
@@ -21,14 +20,8 @@ static int compare(const void *a, const void *b)
     return 1;
 }
 
-static inline uint16_t calcDifference(uint16_t a, uint16_t b)
-{
-  return a > b ? a - b : b - a;
-}
-
 int main(int argc, char *argv[])
 {
-  printf("\n");
   if (argc != 2)
   {
     fprintf(stderr, "Exactly one argument expected: path to input\n");
@@ -71,15 +64,37 @@ int main(int argc, char *argv[])
   // Not the fastest, but it works
   qsort(input, inputCount, sizeof(uint16_t), compare);
 
+  // ======
+  // Part 1
+  // ======
   uint32_t fuelUsed = 0;
   uint16_t median = input[INPUT_SIZE / 2];
-
   for (int i = 0; i < inputCount; i++)
   {
-    fuelUsed += (uint32_t)calcDifference(input[i], median);
+    fuelUsed += abs(input[i] - median);
   }
 
-  printf("%d\n\n", fuelUsed);
+  printf("Part 1: %d units of fuel used.\n", fuelUsed);
+
+  // ======
+  // Part 2
+  // ======
+  uint64_t fuelUsed2 = 0;
+  uint64_t temp = 0;
+  uint16_t max = input[inputCount - 1];
+  for (uint16_t i = 0; i < max; i++)
+  {
+    temp = 0;
+    for (int j = 0; j < inputCount; j++)
+    {
+      uint64_t delta = abs(i - input[j]);
+      temp += delta * (delta + 1) / 2;
+    }
+    if (i == 0 || temp < fuelUsed2)
+      fuelUsed2 = temp;
+  }
+
+  printf("Part 2: %ld units of fuel used.\n", fuelUsed2);
 
   return EXIT_SUCCESS;
 }
