@@ -22,7 +22,6 @@ static int findIndex(int *array, int length, int value)
     if (array[i] == value)
       return i;
   }
-  return NULL;
 }
 
 static int segmentsInCommon(keyRow translation, row currentRow, int currentPos, int b)
@@ -49,7 +48,7 @@ static int segmentsInCommon(keyRow translation, row currentRow, int currentPos, 
   return found;
 }
 
-void sortCharsAlphabetically(char *string)
+static void sortCharsAlphabetically(char *string)
 {
   int i, j;
   char temp;
@@ -250,7 +249,7 @@ int main(int argc, char *argv[])
   }
 
   printf("Part 1: %d\n", count1478);
-  printf("Part 2: %ld\n", answer);
+  printf("Part 2: %d\n", answer);
 
   return EXIT_SUCCESS;
 }
