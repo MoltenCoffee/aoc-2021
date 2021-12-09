@@ -21,6 +21,7 @@ static bool isLowPoint(Point** rows, int r, int c, int maxRow, int maxCol) {
   return true;
 }
 
+// This cannot handle multiple low points in same basin. Problem?
 static int findBasinSize(Point** rows, int r, int c, int maxRow, int maxCol) {
   int size = 0;
 
