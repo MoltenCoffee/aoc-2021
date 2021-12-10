@@ -7,7 +7,7 @@ From day 3 onwards, gathering data from the input files is much cleaner due to s
 Each day can be run using the following snippet (replace the number with the wanted day):
 
 ```sh
-./run.sh 1
+./run.sh 01
 ```
 
 `make` and `gcc` are required for this command to work.
