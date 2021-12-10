@@ -7,6 +7,18 @@
 
 #include "../../lib/common.h"
 
+static int compare(const void* a, const void* b) {
+  uint64_t int_a = *((uint64_t*)a);
+  uint64_t int_b = *((uint64_t*)b);
+
+  if (int_a == int_b)
+    return 0;
+  else if (int_a < int_b)
+    return -1;
+  else
+    return 1;
+}
+
 int main(int argc, char* argv[]) {
   if (argc != 2) {
     fprintf(stderr, "\033[1;31mExactly one argument expected: path to input\n");
@@ -75,16 +87,19 @@ int main(int argc, char* argv[]) {
   if (charStack == NULL)
     fprintf(stderr, "\033[1;31mCould not allocate memory!");
   int stackPos = 0;
+  // Create array for line scores
+  uint64_t* completionScores = calloc(lineCount, sizeof(uint64_t));
+  if (completionScores == NULL)
+    fprintf(stderr, "\033[1;31mCould not allocate memory!");
+  int completionScoreCount = 0;
 
   uint32_t errorScore = 0;
-
   for (int i = 0; i < lineCount; i++) {
+    bool hadError = false;
     for (int j = 0; j < maxLineLength; j++) {
       char c = lines[i][j];
 
       if (c == '\0') break;
-
-      bool hadError = false;
 
       switch (c) {
         case '(':
@@ -130,10 +145,43 @@ int main(int argc, char* argv[]) {
 
       if (hadError) break;
     }
+
+    if (hadError) {
+      stackPos = 0;
+      continue;
+    }
+
+    uint64_t completionScore = 0;
+    for (int k = stackPos - 1; k >= 0; k--) {
+      switch (charStack[k]) {
+        case '(':
+          completionScore *= 5;
+          completionScore += 1;
+          break;
+        case '[':
+          completionScore *= 5;
+          completionScore += 2;
+          break;
+        case '{':
+          completionScore *= 5;
+          completionScore += 3;
+          break;
+        case '<':
+          completionScore *= 5;
+          completionScore += 4;
+          break;
+      }
+    }
+    completionScores[completionScoreCount] = completionScore;
+    completionScoreCount++;
     stackPos = 0;
   }
 
+  // Sort autocomplete scores
+  qsort(completionScores, completionScoreCount, sizeof(uint64_t), compare);
+
   printf("Part 1: Error score: %d\n", errorScore);
+  printf("Part 2: Autocomplete score: %ld\n", completionScores[(completionScoreCount - 1) / 2]);
 
   // Cleanup
   free(charStack);
