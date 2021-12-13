@@ -36,6 +36,36 @@ static Coord foldCoords(Coord* coords, int coordCount, char foldDir,
   return max;
 }
 
+static uint8_t** createGrid(Coord* coords, Coord max) {
+  uint8_t** rows = calloc(max.Y + 1, sizeof(uint8_t*));
+  if (rows == NULL) fprintf(stderr, "\033[1;31mCould not allocate memory!\n");
+  for (int i = 0; i <= max.Y; i++) {
+    rows[i] = calloc(max.X + 1, sizeof(uint8_t));
+    if (rows[i] == NULL)
+      fprintf(stderr, "\033[1;31mCould not allocate memory!\n");
+  }
+
+  return rows;
+}
+
+static uint16_t countDots(Coord* coords, Coord max, int coordCount) {
+  uint8_t** rows = createGrid(coords, max);
+
+  uint16_t count = 0;
+  for (int i = 0; i < coordCount; i++) {
+    if (rows[coords[i].Y][coords[i].X] != 1) {
+      rows[coords[i].Y][coords[i].X] = 1;
+      count++;
+    }
+  }
+
+  for (int i = 0; i <= max.Y; i++) {
+    free(rows[i]);
+  }
+  free(rows);
+  return count;
+}
+
 int main(int argc, char* argv[]) {
   if (argc != 2) {
     fprintf(stderr, "\033[1;31mExactly one argument expected: path to input\n");
@@ -98,6 +128,8 @@ int main(int argc, char* argv[]) {
   int lineCharCount = 0;
   char foldDir;
   uint16_t foldLine;
+  int foldCount = 0;
+  uint16_t dotCountFirstFold;
   for (;;) {
     char c = file[charCount];
     charCount++;
@@ -110,15 +142,17 @@ int main(int argc, char* argv[]) {
       lineCharCount = 0;
 
       Coord localMax = foldCoords(coords, lineCount, foldDir, foldLine);
+      foldCount++;
       if (foldDir == 'x') {
         max.X = localMax.X;
       } else {
         max.Y = localMax.Y;
       }
 
+      if (foldCount == 1) dotCountFirstFold = countDots(coords, max, lineCount);
+
       if (c == '\0') break;
-      // continue;
-      break;
+      continue;
     }
 
     if (lineCharCount == 11) {
@@ -131,23 +165,22 @@ int main(int argc, char* argv[]) {
   }
   free(file);
 
-  uint8_t** rows = calloc(max.Y + 1, sizeof(uint8_t*));
-  if (rows == NULL) fprintf(stderr, "\033[1;31mCould not allocate memory!\n");
-  for (int i = 0; i <= max.Y; i++) {
-    rows[i] = calloc(max.X + 1, sizeof(uint8_t));
-    if (rows[i] == NULL)
-      fprintf(stderr, "\033[1;31mCould not allocate memory!\n");
-  }
+  printf("Part 1: dots after 1 fold: %d\n", dotCountFirstFold);
 
-  uint16_t count = 0;
+  uint8_t** rows = createGrid(coords, max);
   for (int i = 0; i < lineCount; i++) {
     if (rows[coords[i].Y][coords[i].X] != 1) {
       rows[coords[i].Y][coords[i].X] = 1;
-      count++;
     }
   }
 
-  printf("Part 1: dots after 1 fold: %d\n", count);
+  printf("Part 2: code:\n");
+  for (uint16_t i = 0; i <= max.Y; i++) {
+    for (uint16_t j = 0; j <= max.X; j++) {
+      printf(rows[i][j] == 1 ? "█" : " ");
+    }
+    printf("\n");
+  }
 
   // Cleanup
   for (int i = 0; i <= max.Y; i++) {
