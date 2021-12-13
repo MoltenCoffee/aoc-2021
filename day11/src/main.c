@@ -99,20 +99,20 @@ int main(int argc, char* argv[]) {
   }
   free(file);
 
-  for (int i = 0; i < ROW_COUNT; i++) {
-    for (int j = 0; j < COL_COUNT; j++) {
-      printf("%d", rows[i][j]);
-    }
-    printf("%c", '\n');
-  }
-
   // Model steps
   uint16_t flashCount = 0;
-  for (int i = 0; i < 100; i++) {
-    flashCount += step(rows);
+  uint16_t allFlashedInStep;
+  for (int i = 0;; i++) {
+    uint8_t flashesInStep = step(rows);
+    if (i < 100) flashCount += flashesInStep;
+    if (flashesInStep == 100) {
+      allFlashedInStep = i + 1;
+      if (i >= 100) break;
+    }
   }
 
   printf("Part 1: Total flashed after 100 steps: %d\n", flashCount);
+  printf("Part 2: All flash in step: %d\n", allFlashedInStep);
 
   return EXIT_SUCCESS;
 }
